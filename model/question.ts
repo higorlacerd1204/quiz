@@ -1,16 +1,17 @@
+import { randomArray } from '../functions/array';
 import AnswerModel from './answer';
 
 export default class QuestionModel {
   #id: number;
   #question: string;
   #answers: AnswerModel[];
-  #correctAnswer: boolean;
+  #rightAnswer: boolean;
 
-  constructor(id: number, question: string, answers: AnswerModel[], correctAnswer: false) {
+  constructor(id: number, question: string, answers: AnswerModel[], rightAnswer: boolean) {
     this.#id = id;
     this.#question = question;
     this.#answers = answers;
-    this.#correctAnswer = correctAnswer;
+    this.#rightAnswer = rightAnswer;
   }
 
   get id() {
@@ -25,11 +26,26 @@ export default class QuestionModel {
     return this.#answers;
   }
 
-  get correctAnswer() {
-    return this.#correctAnswer;
+  get rightAnswer() {
+    return this.#rightAnswer;
   }
 
   get answered() {
     return this.#answers.some((item) => item.revealed);
+  }
+
+  randomQuestions(): QuestionModel {
+    let newOrderQuestions = randomArray(this.#answers);
+
+    return new QuestionModel(this.#id, this.#question, newOrderQuestions, this.#rightAnswer);
+  }
+
+  toObject() {
+    return {
+      id: this.#id,
+      question: this.#question,
+      answers: this.#answers.map((answer) => answer.toObject()),
+      rightAnswer: this.#rightAnswer,
+    };
   }
 }
