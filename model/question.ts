@@ -34,6 +34,18 @@ export default class QuestionModel {
     return this.#answers.some((item) => item.revealed);
   }
 
+  answeredQuestion(index: number): QuestionModel {
+    const rightAnswer = this.#answers[index]?.correctAnswer;
+    const answers = this.#answers.map((answer, i) => {
+      const answerSelected = index === i;
+      const mustReveal = answerSelected || answer.correctAnswer;
+
+      return mustReveal ? answer.reveal() : answer;
+    });
+
+    return new QuestionModel(this.#id, this.#question, answers, rightAnswer);
+  }
+
   randomQuestions(): QuestionModel {
     let newOrderQuestions = randomArray(this.#answers);
 
@@ -45,6 +57,7 @@ export default class QuestionModel {
       id: this.#id,
       question: this.#question,
       answers: this.#answers.map((answer) => answer.toObject()),
+      answered: this.answered,
       rightAnswer: this.#rightAnswer,
     };
   }
