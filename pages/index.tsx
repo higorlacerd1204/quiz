@@ -1,0 +1,25 @@
+import Question from '../components/Question';
+import AnswerModel from '../model/answer';
+import QuestionModel from '../model/question';
+
+export default function Home() {
+  const questaoTeste = new QuestionModel(
+    1,
+    'Melhor cor?',
+    [
+      AnswerModel.wrongAnswer('Verde'),
+      AnswerModel.wrongAnswer('Preto'),
+      AnswerModel.wrongAnswer('Rosa'),
+      AnswerModel.correctAnswer('Azul'),
+    ],
+    false,
+  );
+
+  return (
+    <div
+      style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}
+    >
+      <Question value={questaoTeste} />
+    </div>
+  );
+}
