@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import Question from '../components/Question';
+import { useEffect, useState } from 'react';
 import AnswerModel from '../model/answer';
 import QuestionModel from '../model/question';
+import Quiz from '../components/Quiz';
+import { BASE_URL } from '../constants/setup';
 
 const questionMock = new QuestionModel(
   1,
@@ -16,18 +17,41 @@ const questionMock = new QuestionModel(
 );
 
 export default function Home() {
+  const [idsQuestions, setIdsQuestions] = useState<number[]>([]);
   const [question, setQuestion] = useState(questionMock);
 
-  function onClickResponse(index: number) {
-    console.log(index);
-    setQuestion(question.answeredQuestion(index));
+  async function getQuestionsIds() {
+    const resp = await fetch(`${BASE_URL}/quiz`);
+    const idsQuestions = await resp.json();
+
+    setIdsQuestions(idsQuestions);
   }
 
+  async function loadingQuestion(idQuestion: number) {
+    const resp = await fetch(`${BASE_URL}/questions/${idQuestion}`);
+    const json = await resp.json();
+
+    console.log(json);
+  }
+
+  useEffect(() => {
+    getQuestionsIds();
+  }, []);
+
+  useEffect(() => {
+    idsQuestions.length > 0 && loadingQuestion(idsQuestions[0]);
+  }, [idsQuestions]);
+
+  function questionAnswered(question: QuestionModel) {}
+
+  function goNextQuestion() {}
+
   return (
-    <div
-      style={{ display: 'flex', height: '100vh', justifyContent: 'center', alignItems: 'center' }}
-    >
-      <Question onClickResponse={onClickResponse} value={question} />
-    </div>
+    <Quiz
+      goNextQuestion={goNextQuestion}
+      lastQuestion={true}
+      question={question}
+      questionAnswered={questionAnswered}
+    />
   );
 }

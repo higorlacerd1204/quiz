@@ -30,6 +30,10 @@ export default class QuestionModel {
     return this.#rightAnswer;
   }
 
+  get notAnswered() {
+    return !this.answered;
+  }
+
   get answered() {
     return this.#answers.some((item) => item.revealed);
   }
