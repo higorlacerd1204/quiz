@@ -44,8 +44,6 @@ export default class QuestionModel {
       const answerSelected = index === i;
       const mustReveal = answerSelected || answer.correctAnswer;
 
-      console.log(mustReveal);
-
       return mustReveal ? answer.reveal() : answer;
     });
 

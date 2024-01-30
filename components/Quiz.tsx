@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import QuestionModel from '../model/question';
 import styles from '../styles/Quiz.module.css';
 import Button from './Button';
@@ -13,11 +12,8 @@ interface QuizProps {
 
 export default function Quiz(props: QuizProps) {
   function onClickResponse(index: number) {
-    const nextQuestion = debounce(() => props.goNextStep(), 1300);
-
     if (props.question.notAnswered) {
       props.questionAnswered(props.question.answeredQuestion(index));
-      nextQuestion();
     }
   }
 
