@@ -1,24 +1,14 @@
 import { useEffect, useState } from 'react';
-import AnswerModel from '../model/answer';
+import { useRouter } from 'next/router';
 import QuestionModel from '../model/question';
 import Quiz from '../components/Quiz';
 import { BASE_URL } from '../constants/setup';
 
-const questionMock = new QuestionModel(
-  1,
-  'Melhor cor?',
-  [
-    AnswerModel.wrongAnswer('Verde'),
-    AnswerModel.wrongAnswer('Preto'),
-    AnswerModel.wrongAnswer('Rosa'),
-    AnswerModel.correctAnswer('Azul'),
-  ],
-  false,
-);
-
 export default function Home() {
+  const router = useRouter();
   const [idsQuestions, setIdsQuestions] = useState<number[]>([]);
-  const [question, setQuestion] = useState(questionMock);
+  const [question, setQuestion] = useState<QuestionModel>();
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   async function getQuestionsIds() {
     const resp = await fetch(`${BASE_URL}/quiz`);
@@ -30,8 +20,9 @@ export default function Home() {
   async function loadingQuestion(idQuestion: number) {
     const resp = await fetch(`${BASE_URL}/questions/${idQuestion}`);
     const json = await resp.json();
+    const newQuestion = QuestionModel.fromObject(json);
 
-    console.log(json);
+    setQuestion(newQuestion);
   }
 
   useEffect(() => {
@@ -42,14 +33,44 @@ export default function Home() {
     idsQuestions.length > 0 && loadingQuestion(idsQuestions[0]);
   }, [idsQuestions]);
 
-  function questionAnswered(question: QuestionModel) {}
+  function questionAnswered(questionAnswered: QuestionModel) {
+    setQuestion(questionAnswered);
 
-  function goNextQuestion() {}
+    const rightAnswer = questionAnswered.rightAnswer;
+
+    setCorrectAnswers(correctAnswers + (rightAnswer ? 1 : 0));
+  }
+
+  function getIdNextQuestion() {
+    const nextIndex = idsQuestions.indexOf(question?.id) + 1;
+
+    return idsQuestions[nextIndex];
+  }
+
+  function goNextStep() {
+    const nextId = getIdNextQuestion();
+
+    nextId ? goNextQuestion(nextId) : finishQuiz();
+  }
+
+  function goNextQuestion(nextId: number) {
+    loadingQuestion(nextId);
+  }
+
+  function finishQuiz() {
+    router.push({
+      pathname: '/result',
+      query: {
+        total: idsQuestions.length,
+        correctAnswers,
+      },
+    });
+  }
 
   return (
     <Quiz
-      goNextQuestion={goNextQuestion}
-      lastQuestion={true}
+      goNextStep={goNextStep}
+      lastQuestion={!getIdNextQuestion()}
       question={question}
       questionAnswered={questionAnswered}
     />

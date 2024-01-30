@@ -26,7 +26,7 @@ export default function Question(props: QuestionProps) {
       <Answer
         backgroundLetterColor={letters[index].color}
         index={index}
-        key={index}
+        key={`${question.id}-${index}`}
         letter={letters[index].value}
         onClickResponse={props.onClickResponse}
         value={answer}
@@ -37,7 +37,7 @@ export default function Question(props: QuestionProps) {
   return (
     <div className={styles.question}>
       <QuestionStatement text={question.question} />
-      <Timer duration={props.timeAnswer ?? 10} emptyTime={props.emptyTime} />
+      <Timer duration={props.timeAnswer ?? 10} emptyTime={props.emptyTime} key={question.id} />
       {renderAnswered()}
     </div>
   );
