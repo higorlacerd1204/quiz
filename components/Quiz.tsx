@@ -22,7 +22,7 @@ export default function Quiz(props: QuizProps) {
   return (
     <>
       {props.question ? (
-        <FadeInOut show={!!props.question} duration={800}>
+        <FadeInOut show={!!props.question} duration={1000}>
           <div className={styles.quiz}>
             <Question
               emptyTime={props.goNextStep}
