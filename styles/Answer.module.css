@@ -1,6 +1,6 @@
 .answer {
   display: flex;
-  height: 100px;
+  height: 70px;
   margin: 10px;
   perspective: 1000px;
   width: 90%;
@@ -8,6 +8,7 @@
 
   @media (min-width: 580px) {
     width: 550px;
+    height: 100px;
   }
 }
 
