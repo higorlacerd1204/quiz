@@ -1,1 +1,5 @@
-export const BASE_URL = 'https://quiz-peach-alpha.vercel.app/api';
+const urlPage = () => {
+  return global.window?.location.href;
+};
+
+export const BASE_API_URL = `${urlPage()}/api`;

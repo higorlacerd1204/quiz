@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import QuestionModel from '../model/question';
 import Quiz from '../components/Quiz';
-import { BASE_URL } from '../constants/setup';
+import { BASE_API_URL } from '../constants/setup';
 
 export default function Home() {
   const router = useRouter();
@@ -11,14 +12,14 @@ export default function Home() {
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
   async function getQuestionsIds() {
-    const resp = await fetch(`${BASE_URL}/quiz`);
+    const resp = await fetch(`${BASE_API_URL}/quiz`);
     const idsQuestions = await resp.json();
 
     setIdsQuestions(idsQuestions);
   }
 
   async function loadingQuestion(idQuestion: number) {
-    const resp = await fetch(`${BASE_URL}/questions/${idQuestion}`);
+    const resp = await fetch(`${BASE_API_URL}/questions/${idQuestion}`);
     const json = await resp.json();
     const newQuestion = QuestionModel.fromObject(json);
 
@@ -68,11 +69,17 @@ export default function Home() {
   }
 
   return (
-    <Quiz
-      goNextStep={goNextStep}
-      lastQuestion={!getIdNextQuestion()}
-      question={question}
-      questionAnswered={questionAnswered}
-    />
+    <>
+      <Head>
+        <title>Quiz</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Quiz
+        goNextStep={goNextStep}
+        lastQuestion={!getIdNextQuestion()}
+        question={question}
+        questionAnswered={questionAnswered}
+      />
+    </>
   );
 }

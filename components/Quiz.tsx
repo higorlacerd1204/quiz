@@ -1,7 +1,9 @@
+import ReactLoading from 'react-loading';
 import QuestionModel from '../model/question';
 import styles from '../styles/Quiz.module.css';
 import Button from './Button';
 import Question from './Question';
+import FadeInOut from './FadeInOut';
 
 interface QuizProps {
   question: QuestionModel;
@@ -18,18 +20,27 @@ export default function Quiz(props: QuizProps) {
   }
 
   return (
-    <div className={styles.quiz}>
+    <>
       {props.question ? (
-        <Question
-          emptyTime={props.goNextStep}
-          onClickResponse={onClickResponse}
-          timeAnswer={10}
-          value={props.question}
-        />
+        <FadeInOut show={!!props.question} duration={800}>
+          <div className={styles.quiz}>
+            <Question
+              emptyTime={props.goNextStep}
+              onClickResponse={onClickResponse}
+              timeAnswer={10}
+              value={props.question}
+            />
+            <Button
+              onClick={props.goNextStep}
+              text={props.lastQuestion ? 'Finalizar' : 'Próxima'}
+            />
+          </div>
+        </FadeInOut>
       ) : (
-        false
+        <div className={styles.loading}>
+          <ReactLoading type="spin" color="#fff" height={'10%'} width={'10%'} />
+        </div>
       )}
-      <Button onClick={props.goNextStep} text={props.lastQuestion ? 'Finalizar' : 'Próxima'} />
-    </div>
+    </>
   );
 }

@@ -2,9 +2,13 @@
   display: flex;
   height: 100px;
   margin: 10px;
-  width: 80%;
-  min-width: 500px;
   perspective: 1000px;
+  width: 90%;
+  min-width: 300px;
+
+  @media (min-width: 580px) {
+    width: 550px;
+  }
 }
 
 .content {
@@ -13,6 +17,7 @@
   position: relative;
   transition: transform 0.8s;
   transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .content.answerRevealed {
