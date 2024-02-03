@@ -10,6 +10,7 @@ export default function Home() {
   const [idsQuestions, setIdsQuestions] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionModel>();
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
+  const [width, setWidth] = useState(global.window?.innerWidth);
 
   async function getQuestionsIds() {
     const resp = await fetch(`${BASE_API_URL}/quiz`);
@@ -27,12 +28,24 @@ export default function Home() {
   }
 
   useEffect(() => {
+    global.window?.addEventListener('resize', refreshWidth);
+  }, []);
+
+  useEffect(() => {
     getQuestionsIds();
   }, []);
 
   useEffect(() => {
     idsQuestions.length > 0 && loadingQuestion(idsQuestions[0]);
   }, [idsQuestions]);
+
+  function refreshWidth() {
+    setWidth(global.window?.innerWidth);
+  }
+
+  function isMobile() {
+    return width < 580;
+  }
 
   function questionAnswered(questionAnswered: QuestionModel) {
     setQuestion(questionAnswered);
@@ -76,6 +89,7 @@ export default function Home() {
       </Head>
       <Quiz
         goNextStep={goNextStep}
+        isMobile={isMobile()}
         lastQuestion={!getIdNextQuestion()}
         question={question}
         questionAnswered={questionAnswered}

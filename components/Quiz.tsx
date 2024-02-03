@@ -10,6 +10,7 @@ interface QuizProps {
   lastQuestion: boolean;
   questionAnswered: (questao: QuestionModel) => void;
   goNextStep: () => void;
+  isMobile: boolean;
 }
 
 export default function Quiz(props: QuizProps) {
@@ -26,6 +27,7 @@ export default function Quiz(props: QuizProps) {
           <div className={styles.quiz}>
             <Question
               emptyTime={props.goNextStep}
+              isMobile={props.isMobile}
               onClickResponse={onClickResponse}
               timeAnswer={10}
               value={props.question}

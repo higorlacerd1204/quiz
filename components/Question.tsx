@@ -16,6 +16,7 @@ interface QuestionProps {
   onClickResponse: (index: number) => void;
   emptyTime: () => void;
   timeAnswer?: number;
+  isMobile: boolean;
 }
 
 export default function Question(props: QuestionProps) {
@@ -37,7 +38,12 @@ export default function Question(props: QuestionProps) {
   return (
     <div className={styles.question}>
       <QuestionStatement text={question.question} />
-      <Timer duration={props.timeAnswer ?? 10} emptyTime={props.emptyTime} key={question.id} />
+      <Timer
+        duration={props.timeAnswer ?? 10}
+        emptyTime={props.emptyTime}
+        key={question.id}
+        isMobile={props.isMobile}
+      />
       {renderAnswered()}
     </div>
   );

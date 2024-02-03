@@ -5,7 +5,10 @@ interface TimerProps {
   key: any;
   duration: number;
   emptyTime: () => void;
+  isMobile: boolean;
 }
+
+console.log(global.window?.innerWidth);
 
 export default function Timer(props: TimerProps) {
   return (
@@ -16,7 +19,7 @@ export default function Timer(props: TimerProps) {
         duration={props.duration}
         isPlaying
         onComplete={props.emptyTime}
-        size={120}
+        size={props.isMobile ? 100 : 120}
       >
         {({ remainingTime }) => remainingTime}
       </CountdownCircleTimer>
