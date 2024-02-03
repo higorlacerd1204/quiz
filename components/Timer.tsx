@@ -8,8 +8,6 @@ interface TimerProps {
   isMobile: boolean;
 }
 
-console.log(global.window?.innerWidth);
-
 export default function Timer(props: TimerProps) {
   return (
     <div className={styles.timer}>

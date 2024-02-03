@@ -9,6 +9,13 @@
 
   @media (max-width: 620px) {
     font-size: 1.2rem;
+    height: auto;
+  }
+}
+
+.title {
+  @media (max-width: 620px) {
+    margin-bottom: 6px;
   }
 }
 

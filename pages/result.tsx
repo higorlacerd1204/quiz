@@ -11,7 +11,7 @@ export default function Result() {
 
   return (
     <div className={styles.result}>
-      <h1>Resultado Final</h1>
+      <h1 className={styles.title}>Resultado Final</h1>
       <div className={styles.stastistics}>
         <Statistic text="Perguntas" value={total} />
         <Statistic text="Certas" value={correctAnswers} backgroundColor="#9CD2A4" />
